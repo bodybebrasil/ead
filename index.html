@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyBe - Plataforma de Treinamento</title>
+    <link rel="icon" type="image/x-icon" href="https://bodybebrasil.com.br/wp-content/uploads/2020/10/logo_icone_32px_02.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #fafafa;
+            color: #333;
+        }
+
+        /* === HEADER === */
+        .header {
+            background: #0b1935;
+            padding: 20px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            height: 45px;
+        }
+
+        .header-text h1 {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header-text p {
+            color: #CCff33;
+            font-size: 12px;
+        }
+
+        .menu-btn {
+            display: none;
+            background: #CCff33;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0b1935;
+        }
+
+        /* === LAYOUT === */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            min-height: calc(100vh - 85px);
+        }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            width: 340px;
+            background: white;
+            border-right: 1px solid #e5e5e5;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            padding: 25px 20px;
+            background: #f8f8f8;
+            border-bottom: 3px solid #CCff33;
+        }
+
+        .sidebar-title h2 {
+            font-size: 16px;
+            color: #0b1935;
+            font-weight: 600;
+        }
+
+        /* Categories */
+        .category {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .category-header {
+            width: 100%;
+            padding: 20px;
+            background: white;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #0b1935;
+            transition: 0.2s;
+        }
+
+        .category-header:hover {
+            background: #f9f9f9;
+        }
+
+        .category-header.active {
+            background: #0b1935;
+            color: white;
+        }
+
+        .category-header.active .arrow {
+            color: #CCff33;
+            transform: rotate(180deg);
+        }
+
+        .category-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .arrow {
+            transition: transform 0.3s;
+            color: #999;
+        }
+
+        .category-content {
+            display: none;
+            background: #fafafa;
+        }
+
+        .category-content.show {
+            display: block;
+        }
+
+        /* Subcategories */
+        .subcategory-header {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            background: transparent;
+            border: none;
+            border-left: 3px solid transparent;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0b1935;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .subcategory-header:hover {
+            background: white;
+            border-left-color: #CCff33;
+        }
+
+        .subcategory-header.active {
+            background: white;
+            border-left-color: #CCff33;
+        }
+
+        .subcategory-content {
+            display: none;
+            background: white;
+        }
+
+        .subcategory-content.show {
+            display: block;
+        }
+
+        /* Videos */
+        .video-item {
+            padding: 14px 20px 14px 70px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            border-left: 3px solid transparent;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .video-item:hover {
+            background: #f5f5f5;
+            color: #0b1935;
+        }
+
+        .video-item.active {
+            background: #f0fff0;
+            border-left-color: #CCff33;
+            color: #0b1935;
+            font-weight: 600;
+        }
+
+        .video-num {
+            color: #0b1935;
+            font-weight: 700;
+            min-width: 30px;
+        }
+
+        .empty {
+            padding: 50px 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* === CONTENT === */
+        .content {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        /* Welcome */
+        .welcome {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .welcome-icon {
+            font-size: 70px;
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            font-size: 32px;
+            color: #0b1935;
+            margin-bottom: 20px;
+        }
+
+        .welcome p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            background: #0b1935;
+            color: #CCff33;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Video Player */
+        .player {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .player.show {
+            display: block;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .breadcrumb-tag {
+            background: #0b1935;
+            color: #CCff33;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .video-title {
+            font-size: 26px;
+            color: #0b1935;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .video-frame {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            background: #000;
+        }
+
+        #thumbnailOverlay {
+            transition: opacity 0.3s;
+        }
+
+        #thumbnailOverlay:hover {
+            opacity: 0.95;
+        }
+
+        .video-frame:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .video-frame img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-frame .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .video-frame:hover .play-overlay {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .video-frame .play-btn {
+            width: 90px;
+            height: 90px;
+            background: #CCff33;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            color: #0b1935;
+            transition: 0.3s;
+            padding-left: 5px;
+        }
+
+        .video-frame:hover .play-btn {
+            transform: scale(1.2);
+            background: #fff;
+        }
+
+        .video-hover-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .video-frame:hover .video-hover-text {
+            opacity: 1;
+        }
+
+        .video-frame .thumbnail-fallback:hover {
+            transform: scale(1.02);
+        }
+
+        .video-frame .thumbnail-fallback img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-frame .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .video-frame .thumbnail-fallback:hover .play-overlay {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .video-frame .play-btn {
+            width: 80px;
+            height: 80px;
+            background: #CCff33;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #0b1935;
+            transition: 0.3s;
+        }
+
+        .video-frame .thumbnail-fallback:hover .play-btn {
+            transform: scale(1.2);
+            background: #fff;
+        }
+
+        /* Progress */
+        .progress-box {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .progress-label {
+            color: #0b1935;
+            font-weight: 600;
+        }
+
+        .progress-count {
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #CCff33 0%, #0b1935 100%);
+            transition: width 0.5s;
+            border-radius: 10px;
+        }
+
+        /* Navigation */
+        .nav-btns {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-prev {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background: #e0e0e0;
+        }
+
+        .btn-next {
+            background: #0b1935;
+            color: #CCff33;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            background: #1a2a4a;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        /* === MOBILE === */
+        @media (max-width: 900px) {
+            .video-frame .play-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+            }
+            
+            .video-hover-text {
+                font-size: 14px;
+            }
+
+            .header-text h1 {
+                font-size: 16px;
+            }
+
+            .header-text p {
+                font-size: 11px;
+            }
+
+            .header-logo {
+                height: 35px;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .container {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 85px;
+                left: 0;
+                bottom: 0;
+                z-index: 95;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .overlay.show {
+                display: block;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .welcome {
+                padding: 60px 20px;
+            }
+
+            .welcome h2 {
+                font-size: 24px;
+            }
+
+            .video-title {
+                font-size: 20px;
+            }
+
+            .nav-btns {
+                flex-direction: column;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CCff33;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0b1935;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-content">
+        <div class="header-left">
+            <img src="https://bodybebrasil.com.br/wp-content/uploads/2020/10/logo_70px.png" alt="BodyBe" class="header-logo">
+            <div class="header-text">
+                <h1>Plataforma de Treinamento</h1>
+                <p>Capacitação e Desenvolvimento</p>
+            </div>
+        </div>
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+</header>
+
+<!-- Overlay Mobile -->
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<!-- Container -->
+<div class="container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-title">
+            <h2>📚 Conteúdos de Treinamento</h2>
+        </div>
+
+        <!-- Categoria: Eletroestimulação -->
+        <div class="category">
+            <button class="category-header" onclick="toggleCat(this)">
+                <span class="category-name">
+                    <span>⚡</span>
+                    <span>Eletroestimulação</span>
+                </span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content">
+                
+                <!-- Introdução -->
+                <button class="subcategory-header" onclick="toggleSub(this)">
+                    <span>📖 Introdução</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="subcategory-content">
+                    <div class="video-item" onclick="play('dxVkVVtFDvU','Conteúdo','Eletroestimulação > Introdução',1,11)">
+                        <span class="video-num">1.</span>Conteúdo
+                    </div>
+                    <div class="video-item" onclick="play('e6xZEhPPag8','Missão, Visão e Valores','Eletroestimulação > Introdução',2,11)">
+                        <span class="video-num">2.</span>Missão, Visão e Valores
+                    </div>
+                    <div class="video-item" onclick="play('ZLav3RjxevU','Bodybe','Eletroestimulação > Introdução',3,11)">
+                        <span class="video-num">3.</span>Bodybe
+                    </div>
+                    <div class="video-item" onclick="play('8olSDQO8h34','Nossa Marca','Eletroestimulação > Introdução',4,11)">
+                        <span class="video-num">4.</span>Nossa Marca
+                    </div>
+                    <div class="video-item" onclick="play('GwXUcbmJam4','Diferenciais','Eletroestimulação > Introdução',5,11)">
+                        <span class="video-num">5.</span>Diferenciais
+                    </div>
+                    <div class="video-item" onclick="play('Wx3b876N1Ts','Educador Físico','Eletroestimulação > Introdução',6,11)">
+                        <span class="video-num">6.</span>Educador Físico
+                    </div>
+                    <div class="video-item" onclick="play('aNCs9fVYcCw','Proposta','Eletroestimulação > Introdução',7,11)">
+                        <span class="video-num">7.</span>Proposta
+                    </div>
+                    <div class="video-item" onclick="play('NJ0nw9m1gUo','Persona','Eletroestimulação > Introdução',8,11)">
+                        <span class="video-num">8.</span>Persona
+                    </div>
+                    <div class="video-item" onclick="play('yrs7hEVU-Mw','Origem','Eletroestimulação > Introdução',9,11)">
+                        <span class="video-num">9.</span>Origem
+                    </div>
+                    <div class="video-item" onclick="play('zc6WX4xNMMg','Era Moderna','Eletroestimulação > Introdução',10,11)">
+                        <span class="video-num">10.</span>Era Moderna
+                    </div>
+                    <div class="video-item" onclick="play('waivhL9ijrE','Evolução','Eletroestimulação > Introdução',11,11)">
+                        <span class="video-num">11.</span>Evolução
+                    </div>
+                </div>
+
+                <!-- Básico -->
+                <button class="subcategory-header" onclick="toggleSub(this)">
+                    <span>🎯 Básico</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="subcategory-content">
+                    <div class="video-item" onclick="play('3Y-PHYWZc-s','Resumo','Eletroestimulação > Básico',1,18)">
+                        <span class="video-num">1.</span>Resumo
+                    </div>
+                    <div class="video-item" onclick="play('Ls90AOOJ0Yo','Contração Voluntária x Involuntária','Eletroestimulação > Básico',2,18)">
+                        <span class="video-num">2.</span>Contração Voluntária x Involuntária
+                    </div>
+                    <div class="video-item" onclick="play('MLl1kfgUDNI','Recrutamento de Fibras Musculares','Eletroestimulação > Básico',3,18)">
+                        <span class="video-num">3.</span>Recrutamento de Fibras Musculares
+                    </div>
+                    <div class="video-item" onclick="play('86HfdaRP5bQ','Frequências Hz','Eletroestimulação > Básico',4,18)">
+                        <span class="video-num">4.</span>Frequências Hz
+                    </div>
+                    <div class="video-item" onclick="play('6VYtr9FUXNY','Tipos de Contrações Musculares','Eletroestimulação > Básico',5,18)">
+                        <span class="video-num">5.</span>Tipos de Contrações Musculares
+                    </div>
+                    <div class="video-item" onclick="play('gDHe-BG9AFQ','Protocolos Exclusivos BodyBe','Eletroestimulação > Básico',6,18)">
+                        <span class="video-num">6.</span>Protocolos Exclusivos BodyBe
+                    </div>
+                    <div class="video-item" onclick="play('0vcJCm175Mg','Escala de Borg','Eletroestimulação > Básico',7,18)">
+                        <span class="video-num">7.</span>Escala de Borg
+                    </div>
+                    <div class="video-item" onclick="play('W1xzL9kNqwY','Princípios de Treinamento','Eletroestimulação > Básico',8,18)">
+                        <span class="video-num">8.</span>Princípios de Treinamento
+                    </div>
+                    <div class="video-item" onclick="play('jI2AWExNM24','Variáveis de Treinamento','Eletroestimulação > Básico',9,18)">
+                        <span class="video-num">9.</span>Variáveis de Treinamento
+                    </div>
+                    <div class="video-item" onclick="play('CkpvpVCoMNs','Adaptação e Periodização','Eletroestimulação > Básico',10,18)">
+                        <span class="video-num">10.</span>Adaptação e Periodização
+                    </div>
+                    <div class="video-item" onclick="play('d9F5ZgwnyeA','Prática Fortalecimento - Be Strong I e Be Power','Eletroestimulação > Básico',11,18)">
+                        <span class="video-num">11.</span>Prática Fortalecimento - Be Strong I e Be Power
+                    </div>
+                    <div class="video-item" onclick="play('_feXuO2SwjI','Prática Fortalecimento Be Strong III','Eletroestimulação > Básico',12,18)">
+                        <span class="video-num">12.</span>Prática Fortalecimento Be Strong III
+                    </div>
+                    <div class="video-item" onclick="play('1vR6rVWocro','Prática - Aeróbico - Be Extreme e Drenagem','Eletroestimulação > Básico',13,18)">
+                        <span class="video-num">13.</span>Prática - Aeróbico - Be Extreme e Drenagem
+                    </div>
+                    <div class="video-item" onclick="play('ZCp_cGxpqMc','Prática Bi Set, Be Fit I e Be Fit II','Eletroestimulação > Básico',14,18)">
+                        <span class="video-num">14.</span>Prática Bi Set, Be Fit I e Be Fit II
+                    </div>
+                    <div class="video-item" onclick="play('RtF4AQpi2Z8','Prática - Circuito - Be Mix I e Be Mix II','Eletroestimulação > Básico',15,18)">
+                        <span class="video-num">15.</span>Prática - Circuito - Be Mix I e Be Mix II
+                    </div>
+                    <div class="video-item" onclick="play('QlWuYu-FBXc','Prática - Aula Experimental Básica','Eletroestimulação > Básico',16,18)">
+                        <span class="video-num">16.</span>Prática - Aula Experimental Básica
+                    </div>
+                    <div class="video-item" onclick="play('mlqfeNKpfNg','Prática - Aula Experimental Avançada','Eletroestimulação > Básico',17,18)">
+                        <span class="video-num">17.</span>Prática - Aula Experimental Avançada
+                    </div>
+                    <div class="video-item" onclick="play('bArnUkgKl_I','Prática - Periodização','Eletroestimulação > Básico',18,18)">
+                        <span class="video-num">18.</span>Prática - Periodização
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Categoria: Estética -->
+        <div class="category">
+            <button class="category-header" onclick="toggleCat(this)">
+                <span class="category-name">
+                    <span>💆</span>
+                    <span>Estética</span>
+                </span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content">
+                <div class="empty">Em breve novos conteúdos</div>
+            </div>
+        </div>
+
+        <!-- Categoria: Vendas -->
+        <div class="category">
+            <button class="category-header" onclick="toggleCat(this)">
+                <span class="category-name">
+                    <span>💼</span>
+                    <span>Vendas</span>
+                </span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content">
+                <div class="empty">Em breve novos conteúdos</div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+        
+        <!-- Welcome Screen -->
+        <div class="welcome" id="welcome">
+            <div class="welcome-icon">🎓</div>
+            <h2>Bem-vindo à Plataforma de Treinamento BodyBe</h2>
+            <p>
+                Selecione uma aula no menu lateral para começar sua jornada de aprendizado. 
+                Explore nossos conteúdos sobre <span class="badge">Eletroestimulação</span>, 
+                <span class="badge">Estética</span> e 
+                <span class="badge">Vendas</span>.
+            </p>
+        </div>
+
+        <!-- Video Player -->
+        <div class="player" id="player">
+            <div class="breadcrumb">
+                <span class="breadcrumb-tag" id="breadcrumb"></span>
+            </div>
+            <h1 class="video-title" id="title"></h1>
+            
+            <div class="video-frame" id="videoFrame" style="position: relative;">
+                <iframe 
+                    id="videoIframe" 
+                    src="" 
+                    title="YouTube video player" 
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; z-index: 1;">
+                </iframe>
+                <div id="thumbnailOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; display: none; cursor: pointer;" onclick="showCopyLinkBox()">
+                    <img id="thumbnail" src="" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="play-overlay">
+                        <div class="play-btn">📋</div>
+                    </div>
+                    <div class="video-hover-text" style="background: rgba(11,25,53,0.9); padding: 10px 20px; border-radius: 8px;">
+                        ⚠️ Vídeo bloqueado<br>
+                        <span style="font-size: 14px;">Clique para copiar o link</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="videoLinkBox" style="display: none; background: linear-gradient(135deg, #0b1935 0%, #1a2f5a 100%); padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 3px solid #CCff33;">
+                <h3 style="margin: 0 0 15px 0; color: #CCff33; font-size: 20px; font-weight: 700;">
+                    📋 Link do Vídeo Copiado!
+                </h3>
+                <p style="margin-bottom: 20px; color: #fff; font-size: 15px; line-height: 1.6;">
+                    O link foi copiado para sua área de transferência. Cole em outro dispositivo ou navegador para assistir:
+                </p>
+                <div style="background: white; padding: 18px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #CCff33;">
+                    <p id="videoLinkText" style="font-family: 'Courier New', monospace; font-size: 14px; color: #0b1935; word-break: break-all; user-select: all; margin: 0; font-weight: 600;">
+                        https://www.youtube.com/watch?v=
+                    </p>
+                </div>
+                <button onclick="copyVideoLink()" style="width: 100%; padding: 15px; background: #CCff33; color: #0b1935; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 16px; transition: 0.3s;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#CCff33'">
+                    📋 COPIAR NOVAMENTE
+                </button>
+                <p style="margin: 15px 0 0 0; color: #CCff33; font-size: 13px; text-align: center;">
+                    💡 Ou selecione o link acima e pressione Ctrl+C (Cmd+C no Mac)
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <p id="videoMessage" style="color: #666; font-size: 14px; display: none;">
+                    👆 Clique na imagem acima para assistir o vídeo no YouTube
+                </p>
+            </div>
+
+            <div class="progress-box">
+                <div class="progress-top">
+                    <span class="progress-label">Progresso da Categoria</span>
+                    <span class="progress-count" id="count">0 / 0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="fill"></div>
+                </div>
+            </div>
+
+            <div class="nav-btns">
+                <button class="btn btn-prev" id="prev" onclick="nav(-1)">← Anterior</button>
+                <button class="btn btn-next" id="next" onclick="nav(1)">Próximo →</button>
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+let idx = 0;
+let vids = [];
+let currentVideoUrl = '';
+
+// Mostrar box de copiar link
+function showCopyLinkBox() {
+    const videoLinkBox = document.getElementById('videoLinkBox');
+    videoLinkBox.style.display = 'block';
+    
+    // Tentar copiar automaticamente
+    copyVideoLink();
+    
+    // Scroll suave até o box
+    videoLinkBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Função para copiar link do vídeo
+function copyVideoLink() {
+    if (currentVideoUrl) {
+        // Tentar copiar para área de transferência
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(currentVideoUrl).then(function() {
+                alert('✅ Link copiado!\n\n' + currentVideoUrl + '\n\n🚫 O YouTube está bloqueado neste navegador/rede.\n\n📱 Cole o link em:\n• Seu celular\n• Outro navegador (Edge, Firefox, Chrome Incognito)\n• Computador de casa\n\nPressione Ctrl+V para colar!');
+            }).catch(function(err) {
+                showManualCopy();
+            });
+        } else {
+            showManualCopy();
+        }
+    } else {
+        alert('❌ Nenhum vídeo selecionado. Escolha um vídeo no menu lateral primeiro.');
+    }
+}
+
+function showManualCopy() {
+    const linkText = document.getElementById('videoLinkText');
+    
+    // Selecionar o texto automaticamente
+    if (window.getSelection && document.createRange) {
+        const range = document.createRange();
+        range.selectNodeContents(linkText);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+    
+    alert('📋 Copie o link selecionado abaixo!\n\n' + currentVideoUrl + '\n\nUse Ctrl+C para copiar.');
+}
+
+// Toggle Category
+function toggleCat(el) {
+    const cont = el.nextElementSibling;
+    const open = cont.classList.contains('show');
+    
+    document.querySelectorAll('.category-content').forEach(c => c.classList.remove('show'));
+    document.querySelectorAll('.category-header').forEach(h => h.classList.remove('active'));
+    
+    if (!open) {
+        cont.classList.add('show');
+        el.classList.add('active');
+    }
+}
+
+// Toggle Subcategory
+function toggleSub(el) {
+    const cont = el.nextElementSibling;
+    const open = cont.classList.contains('show');
+    
+    const parent = el.closest('.category-content');
+    parent.querySelectorAll('.subcategory-content').forEach(c => c.classList.remove('show'));
+    parent.querySelectorAll('.subcategory-header').forEach(h => h.classList.remove('active'));
+    
+    if (!open) {
+        cont.classList.add('show');
+        el.classList.add('active');
+    }
+}
+
+// Play Video
+function play(id, t, bc, i, tot) {
+    console.log('==== CARREGANDO VÍDEO ====');
+    console.log('ID:', id);
+    
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('player').classList.add('show');
+    
+    // URLs do vídeo - TENTANDO youtube-nocookie (menos restritivo)
+    const embedUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+    const watchUrl = `https://www.youtube.com/watch?v=${id}`;
+    const thumbnailUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+    
+    console.log('Tentando embed:', embedUrl);
+    
+    // Armazenar URL globalmente
+    currentVideoUrl = watchUrl;
+    
+    // Elementos
+    const iframe = document.getElementById('videoIframe');
+    const thumbnailOverlay = document.getElementById('thumbnailOverlay');
+    const videoLinkBox = document.getElementById('videoLinkBox');
+    const videoLinkText = document.getElementById('videoLinkText');
+    
+    // Reset
+    thumbnailOverlay.style.display = 'none';
+    videoLinkBox.style.display = 'none';
+    
+    // Atualizar thumbnail (caso precise)
+    document.getElementById('thumbnail').src = thumbnailUrl;
+    videoLinkText.textContent = watchUrl;
+    
+    // Carregar iframe
+    iframe.src = embedUrl;
+    
+    // Timeout: Se não carregar em 3 segundos, assume que está bloqueado
+    let iframeTimeout = setTimeout(function() {
+        console.warn('⚠️ Iframe não carregou - mostrando fallback');
+        thumbnailOverlay.style.display = 'block';
+    }, 3000);
+    
+    // Se iframe carregar, cancela o timeout
+    iframe.onload = function() {
+        console.log('✅ Iframe carregado!');
+        clearTimeout(iframeTimeout);
+    };
+    
+    // Se der erro, mostra thumbnail imediatamente
+    iframe.onerror = function() {
+        console.error('❌ Erro ao carregar iframe');
+        clearTimeout(iframeTimeout);
+        thumbnailOverlay.style.display = 'block';
+    };
+    
+    // Atualizar informações
+    document.getElementById('title').textContent = t;
+    document.getElementById('breadcrumb').textContent = bc;
+    document.getElementById('count').textContent = i + ' / ' + tot;
+    document.getElementById('fill').style.width = (i/tot*100) + '%';
+    
+    // Atualizar sidebar
+    document.querySelectorAll('.video-item').forEach(function(v) {
+        v.classList.remove('active');
+    });
+    
+    const clickedItem = event ? event.currentTarget : null;
+    if (clickedItem) {
+        clickedItem.classList.add('active');
+    }
+    
+    idx = i - 1;
+    const list = clickedItem ? clickedItem.closest('.subcategory-content') : document.querySelector('.subcategory-content');
+    vids = Array.from(list.querySelectorAll('.video-item'));
+    
+    const contentArea = document.querySelector('.content');
+    if (contentArea) {
+        contentArea.scrollTop = 0;
+    }
+    
+    updateBtns();
+    closeMenu();
+    
+    console.log('Player inicializado. Aguardando carregamento...');
+}
+
+// Navigate
+function nav(dir) {
+    const newIdx = idx + dir;
+    if (newIdx >= 0 && newIdx < vids.length) {
+        vids[newIdx].click();
+    }
+}
+
+// Update Buttons
+function updateBtns() {
+    document.getElementById('prev').disabled = idx === 0;
+    document.getElementById('next').disabled = idx === vids.length - 1;
+}
+
+// Mobile Menu
+function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+}
+
+function closeMenu() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', function() {
+    const firstCat = document.querySelector('.category-header');
+    if (firstCat) {
+        firstCat.click();
+        setTimeout(() => {
+            const firstSub = document.querySelector('.subcategory-header');
+            if (firstSub) firstSub.click();
+        }, 100);
+    }
+});
+</script>
+
+</body>
+</html>
